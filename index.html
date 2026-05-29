@@ -269,7 +269,21 @@ document.getElementById('lb-close').addEventListener('click',function(){document
   var fs=Math.min(W*0.18,110);
   offCtx.font='bold '+fs+'px Bebas Neue,sans-serif';
   offCtx.fillStyle='#fff';
-  offCtx.fillText('SHKRELI',W/2,H/2-fs*0.1);
+  var word='SHKRELI';
+  var spacing=fs*0.13;
+  var charWidths=[];
+  var totalW=0;
+  for(var li=0;li<word.length;li++){
+    var cw=offCtx.measureText(word[li]).width;
+    charWidths.push(cw);
+    totalW+=cw;
+  }
+  totalW+=spacing*(word.length-1);
+  var startX=W/2-totalW/2;
+  for(var li=0;li<word.length;li++){
+    offCtx.fillText(word[li],startX+charWidths[li]/2,H/2-fs*0.1);
+    startX+=charWidths[li]+spacing;
+  }
   offCtx.font='bold '+Math.round(fs*0.17)+'px Nunito,sans-serif';
   offCtx.fillStyle='#fff';
   offCtx.fillText('SHKODËR  ·  EST. 1995',W/2,H/2+fs*0.62);
