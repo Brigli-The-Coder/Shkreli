@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fast Food Shkreli — Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--or:#FF6B00;--or2:#FF8C33;--blk:#0A0A0A;--brd:#2E2E2E;--txt:#F5F0E8;--muted:#9A9A9A;}
+html,body{background:var(--blk);min-height:100vh;font-family:'Nunito',sans-serif;}
+#bg-layer{position:fixed;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;transition:background-image 0.5s ease;z-index:0;}
+#bg-overlay{position:fixed;inset:0;background:linear-gradient(to bottom,rgba(10,10,10,0.78) 0%,rgba(10,10,10,0.55) 35%,rgba(10,10,10,0.90) 100%);z-index:1;}
+#app{position:relative;z-index:2;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:2.5rem;}
+.header{background:rgba(10,10,10,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:2px solid var(--or);padding:1.2rem 1rem 0.8rem;position:sticky;top:0;z-index:100;}
+.logo-row{display:flex;align-items:center;gap:14px;margin-bottom:0.9rem;}
+.logo-icon{width:52px;height:52px;border-radius:12px;overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:4px 4px 0 rgba(0,0,0,0.7),0 0 0 1px var(--or2);}
+.logo-icon img{width:100%;height:100%;object-fit:contain;display:block;}
+.logo-text h1{font-family:'Bebas Neue',sans-serif;font-size:27px;color:var(--txt);letter-spacing:2.5px;line-height:1;}
+.logo-text span{font-size:10px;color:var(--or);letter-spacing:3px;text-transform:uppercase;font-weight:700;}
+.lang-row{display:flex;gap:7px;}
+.lang-btn{background:rgba(255,255,255,0.06);border:1px solid var(--brd);color:var(--muted);padding:5px 13px;border-radius:20px;font-size:11px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;letter-spacing:0.5px;transition:all 0.18s;}
+.lang-btn.active{background:var(--or);border-color:var(--or);color:#000;box-shadow:2px 2px 0 rgba(0,0,0,0.6);}
+.lang-btn:not(.active):hover{border-color:var(--or2);color:var(--or2);}
+.cat-scroll{display:flex;gap:8px;overflow-x:auto;padding:0.8rem 1rem;background:rgba(10,10,10,0.65);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,107,0,0.18);scrollbar-width:none;position:sticky;top:102px;z-index:99;}
+.cat-scroll::-webkit-scrollbar{display:none;}
+.cat-btn{background:rgba(255,255,255,0.06);border:1px solid var(--brd);color:var(--muted);padding:6px 16px;border-radius:20px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all 0.22s;flex-shrink:0;}
+.cat-btn.active{background:var(--or);border-color:var(--or);color:#000;box-shadow:0 2px 14px rgba(255,107,0,0.45);}
+.cat-btn:not(.active):hover{border-color:var(--or2);color:var(--or2);}
+.bg-label{display:flex;align-items:center;gap:8px;padding:0.7rem 1rem 0;font-size:10px;color:rgba(255,255,255,0.38);letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+.bg-dot{width:6px;height:6px;background:var(--or);border-radius:50%;flex-shrink:0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.25;}}
+.section-label{padding:1.2rem 1rem 0.35rem;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--or);letter-spacing:3.5px;}
+.menu-wrap{padding:0 0.7rem;}
+.menu-table{width:100%;border-collapse:collapse;table-layout:fixed;}
+.menu-table thead tr{background:rgba(20,20,20,0.92);}
+.menu-table th{font-size:11px;font-weight:800;color:var(--or);letter-spacing:2px;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:1px solid var(--brd);}
+.menu-table th.th-price{text-align:right;}
+.menu-table th.th-img{text-align:center;}
+.menu-table td{padding:10px 9px;vertical-align:middle;border-bottom:1px solid rgba(46,46,46,0.55);}
+.menu-table tr:last-child td{border-bottom:none;}
+.menu-table tbody tr{background:rgba(12,12,12,0.78);transition:background 0.15s;}
+.menu-table tbody tr:nth-child(even){background:rgba(22,22,22,0.78);}
+.menu-table tbody tr:hover td{background:rgba(255,107,0,0.09);}
+.col-name{width:55%;}
+.col-price{width:20%;}
+.col-img{width:25%;}
+.item-name{font-weight:800;font-size:14px;color:var(--txt);display:flex;align-items:flex-start;gap:7px;line-height:1.35;}
+.item-dot{width:7px;height:7px;background:var(--or);border-radius:2px;flex-shrink:0;margin-top:4px;box-shadow:1px 1px 0 #000;}
+.item-price{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--or2);text-align:right;white-space:nowrap;letter-spacing:1px;}
+.item-img-wrap{display:flex;align-items:center;justify-content:center;}
+.item-img{width:58px;height:58px;border-radius:10px;object-fit:cover;border:2px solid var(--brd);box-shadow:2px 2px 0 rgba(0,0,0,0.6);transition:transform 0.2s ease,border-color 0.2s ease;display:block;}
+.item-img:hover{transform:scale(1.08);border-color:var(--or);}
+.item-img-placeholder{width:58px;height:58px;border-radius:10px;background:rgba(255,107,0,0.08);border:2px dashed var(--brd);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);letter-spacing:1px;text-align:center;line-height:1.3;}
+.badge{display:inline-block;font-size:9px;font-weight:800;padding:1px 7px;border-radius:10px;letter-spacing:1px;vertical-align:middle;margin-left:4px;}
+.badge-hot{background:#CC2200;color:#fff;}
+.footer-bar{text-align:center;padding:2rem 1rem 1rem;font-size:12px;color:rgba(200,190,180,0.4);letter-spacing:1px;line-height:2;}
+.footer-bar strong{color:var(--or);font-weight:800;}
+/* ── LIGHTBOX ── */
+#lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:center;justify-content:center;cursor:zoom-out;}
+#lightbox.open{display:flex;}
+#lightbox img{max-width:88vw;max-height:82vh;border-radius:16px;border:2px solid var(--or);box-shadow:0 0 60px rgba(255,107,0,0.35);object-fit:contain;cursor:default;animation:lbIn 0.22s ease;}
+@keyframes lbIn{from{transform:scale(0.82);opacity:0;}to{transform:scale(1);opacity:1;}}
+#lb-close{position:fixed;top:18px;right:20px;background:var(--or);color:#000;border:none;border-radius:50%;width:38px;height:38px;font-size:20px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 rgba(0,0,0,0.5);z-index:10000;line-height:1;}
+</style>
+</head>
+<body>
+<div id="bg-layer"></div>
+<div id="bg-overlay"></div>
+<div id="app">
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo-icon"><img src="./logo.jpg" alt="Logo"></div>
+      <div class="logo-text">
+        <h1>Fast Food Shkreli</h1>
+        <span>Shkodër &nbsp;·&nbsp; Est. 1995</span>
+      </div>
+    </div>
+    <div class="lang-row">
+      <button class="lang-btn active" onclick="setLang('sq')">AL</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('it')">IT</button>
+      <button class="lang-btn" onclick="setLang('fr')">FR</button>
+    </div>
+  </div>
+  <div class="cat-scroll">
+    <button class="cat-btn active" onclick="setcat('all')"      id="cat-all">—</button>
+    <button class="cat-btn"        onclick="setcat('burger')"   id="cat-burger">Burger</button>
+    <button class="cat-btn"        onclick="setcat('sandwich')" id="cat-sandwich">Sandwich</button>
+    <button class="cat-btn"        onclick="setcat('doner')"    id="cat-doner">Doner</button>
+    <button class="cat-btn"        onclick="setcat('pjate')"    id="cat-pjate">Pjata</button>
+    <button class="cat-btn"        onclick="setcat('crepe')"    id="cat-crepe">Krep</button>
+    <button class="cat-btn"        onclick="setcat('pije')"     id="cat-pije">Pije</button>
+  </div>
+  <div class="bg-label">
+    <span class="bg-dot"></span>
+    <span id="bg-label-txt">Fast Food Shkreli · Shkodër</span>
+  </div>
+  <div id="menu-root"></div>
+  <div class="footer-bar">
+    <strong>Fast Food Shkreli</strong><br>
+    Rruga Wilson · Shkodër, Albania<br>
+    +355 69 463 6000 · fastfoodshkreli.com<br>
+    <span id="footer-slogan">Çdo kafshim, kënaqësi!</span>
+  </div>
+</div>
+<script>
+const IMGS={all:'bg-all.jpg',burger:'bg-burger.jpg',sandwich:'bg-sandwich.jpg',doner:'bg-doner.jpg',pjate:'bg-doner.jpg',crepe:'bg-crepe.jpg',pije:'bg-pije.jpg'};
+const BG_LABELS={all:'Fast Food Shkreli · Shkodër',burger:'Hamburger · Specialiteti i Shkrelit',sandwich:'Sandwich · Te fresketa cdo dite',doner:'Doner Kebab · Sufllaqe & Doner',pjate:'Pjata · Hot Dog & Sallate',crepe:'Krep · Te embla & Te kripura',pije:'Pije · Freskuese & Birra'};
+
+// ── ITEMS (EN = Wolt labels, gjuhe te tjera ne objekte translate) ──
+const ITEMS=[
+  // BURGER
+  {id:1, cat:'burger',   en:'Hamburger',               price:'190 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303452f5fcdd085b5eae?w=1600'},
+  {id:2, cat:'burger',   en:'Double Hamburger',        price:'240 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303552f5fcdd085b5eb3?w=1600'},
+  {id:3, cat:'burger',   en:'Hamburger & Cheese',      price:'240 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303552f5fcdd085b5eb1?w=1600'},
+  {id:4, cat:'burger',   en:"Shkreli's Hamburger",     price:'340 L', badge:'hot', img:'https://imageproxy.wolt.com/assets/68ff303552f5fcdd085b5eb4?w=1600'},
+  {id:5, cat:'burger',   en:'Hamburger with Eggs',     price:'260 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303552f5fcdd085b5eb5?w=1600'},
+  // SANDWICH
+  {id:6, cat:'sandwich', en:'Sandwich',                price:'200 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303652f5fcdd085b5eb8?w=1600'},
+  {id:7, cat:'sandwich', en:'Double Salami Sandwich',  price:'250 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff309e27718bbaa0511f58?w=1600'},
+  {id:8, cat:'sandwich', en:'Meatball Sandwich',       price:'200 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303652f5fcdd085b5eb6?w=1600'},
+  {id:9, cat:'sandwich', en:'Double Meatball Sandwich',price:'250 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff30a827718bbaa0511f5d?w=1600'},
+  {id:10,cat:'sandwich', en:'Tuna and Mushroom Sandwich',price:'320 L',badge:'',   img:'https://imageproxy.wolt.com/assets/68ff30b227718bbaa0511f61?w=1600'},
+  {id:11,cat:'sandwich', en:'Sandwich Village',        price:'260 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff30b627718bbaa0511f66?w=1600'},
+  {id:12,cat:'sandwich', en:'Ham and Mushroom Sandwich',price:'280 L',badge:'',    img:'https://imageproxy.wolt.com/assets/68ff30bb27718bbaa0511f67?w=1600'},
+  {id:13,cat:'sandwich', en:'Vegetarian Sandwich',     price:'200 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303652f5fcdd085b5eba?w=1600'},
+  {id:14,cat:'sandwich', en:'Sandwich Club',           price:'360 L', badge:'hot', img:'https://imageproxy.wolt.com/assets/68ff303652f5fcdd085b5eb7?w=1600'},
+  {id:15,cat:'sandwich', en:'Toast',                   price:'170 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303752f5fcdd085b5ec0?w=1600'},
+  {id:16,cat:'sandwich', en:'Potato Toast',            price:'200 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff30c827718bbaa0511f6a?w=1600'},
+  {id:17,cat:'sandwich', en:'Chicken Piadina',         price:'280 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303852f5fcdd085b5ec2?w=1600'},
+  {id:18,cat:'sandwich', en:'Piadina with Salami',     price:'230 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff30d5f070793ad1fed86e?w=1600'},
+  // DONER
+  {id:19,cat:'doner',    en:'Doner',                   price:'280 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303852f5fcdd085b5ec3?w=1600'},
+  {id:20,cat:'doner',    en:'Double Doner',            price:'390 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff30e0f070793ad1fed881?w=1600'},
+  {id:21,cat:'doner',    en:'Souvlaki',                price:'280 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303852f5fcdd085b5ec1?w=1600'},
+  {id:22,cat:'doner',    en:'Double Souvlaki',         price:'390 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff30eff070793ad1fed88d?w=1600'},
+  {id:23,cat:'doner',    en:'Souvlaki with Wudy',      price:'280 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303952f5fcdd085b5ec9?w=1600'},
+  {id:24,cat:'doner',    en:'Vegetarian Souvlaki',     price:'230 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303952f5fcdd085b5ec8?w=1600'},
+  {id:25,cat:'doner',    en:'Open Souvlaki',           price:'500 L', badge:'hot', img:'https://imageproxy.wolt.com/assets/68ff303952f5fcdd085b5ec5?w=1600'},
+  {id:26,cat:'doner',    en:'Chicken Meat Ration',     price:'340 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303952f5fcdd085b5ec6?w=1600'},
+  // PJATA
+  {id:27,cat:'pjate',    en:'Hot Dog',                 price:'250 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303952f5fcdd085b5ec7?w=1600'},
+  {id:28,cat:'pjate',    en:'Hot Dog & Cheese',        price:'310 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff313427718bbaa0511fe5?w=1600'},
+  {id:29,cat:'pjate',    en:'Double Hot Dog',          price:'310 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff313af070793ad1fed903?w=1600'},
+  {id:30,cat:'pjate',    en:'Meatball Plate',          price:'500 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303a52f5fcdd085b5ece?w=1600'},
+  {id:31,cat:'pjate',    en:'Chicken Nuggets Plate',   price:'500 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303a52f5fcdd085b5ecb?w=1600'},
+  {id:32,cat:'pjate',    en:'Plate with Wudy',         price:'500 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303a52f5fcdd085b5ecd?w=1600'},
+  {id:33,cat:'pjate',    en:'Mixed Salad',             price:'230 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303a52f5fcdd085b5ecc?w=1600'},
+  {id:34,cat:'pjate',    en:'Chicken Salad',           price:'400 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303b52f5fcdd085b5ecf?w=1600'},
+  // CREPE TE EMBLA
+  {id:35,cat:'crepe',    en:'Dark Chocolate Crepe',    price:'180 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303452f5fcdd085b5ead?w=1600'},
+  {id:36,cat:'crepe',    en:'White Chocolate Crepe',   price:'180 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303452f5fcdd085b5eaf?w=1600'},
+  {id:37,cat:'crepe',    en:'Mixed Chocolate Crepe',   price:'180 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff306152f5fcdd085b5edb?w=1600'},
+  {id:38,cat:'crepe',    en:'Original Nutella Crepe',  price:'220 L', badge:'hot', img:'https://imageproxy.wolt.com/assets/68ff306552f5fcdd085b5edd?w=1600'},
+  {id:39,cat:'crepe',    en:'Caramel Crepe',           price:'200 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff306852f5fcdd085b5ee0?w=1600'},
+  {id:40,cat:'crepe',    en:'Amaretto Crepe',          price:'220 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff306b52f5fcdd085b5ee2?w=1600'},
+  {id:41,cat:'crepe',    en:'Rihanna Crepe',           price:'210 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff306f52f5fcdd085b5ee3?w=1600'},
+  {id:42,cat:'crepe',    en:'Ledia Crepe',             price:'210 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303452f5fcdd085b5eb0?w=1600'},
+  {id:43,cat:'crepe',    en:'Bad Boy Crepe',           price:'255 L', badge:'hot', img:'https://imageproxy.wolt.com/assets/68ff307352f5fcdd085b5ee5?w=1600'},
+  {id:44,cat:'crepe',    en:'Chocolate Banana Crepe',  price:'220 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff307952f5fcdd085b5ee9?w=1600'},
+  {id:45,cat:'crepe',    en:'California Crepe',        price:'220 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303452f5fcdd085b5eac?w=1600'},
+  // CREPE TE KRIPURA
+  {id:46,cat:'crepe',    en:'Chicken Crepe',           price:'280 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff303752f5fcdd085b5ebf?w=1600'},
+  {id:47,cat:'crepe',    en:'Mexican Crepe',           price:'280 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff308452f5fcdd085b5ef2?w=1600'},
+  {id:48,cat:'crepe',    en:'Vegetarian Crepe',        price:'280 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff308752f5fcdd085b5ef9?w=1600'},
+  // PIJE
+  {id:49,cat:'pije',     en:'Natural Water',           price:'70 L',  badge:'',    img:'https://imageproxy.wolt.com/assets/68ff319052f5fcdd085b6019?w=1600'},
+  {id:50,cat:'pije',     en:'Sparkling Water',         price:'70 L',  badge:'',    img:'https://imageproxy.wolt.com/assets/68ff318d52f5fcdd085b5fff?w=1600'},
+  {id:51,cat:'pije',     en:'Buttermilk',              price:'80 L',  badge:'',    img:'https://imageproxy.wolt.com/assets/68ff319952f5fcdd085b6040?w=1600'},
+  {id:52,cat:'pije',     en:'Coca Cola',               price:'150 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff314bf070793ad1fed91b?w=1600'},
+  {id:53,cat:'pije',     en:'Ivy',                     price:'150 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff3153f070793ad1fed921?w=1600'},
+  {id:54,cat:'pije',     en:'Pepsi',                   price:'150 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff315af070793ad1fed92a?w=1600'},
+  {id:55,cat:'pije',     en:'Fanta Orange',            price:'150 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff3162f070793ad1fed93b?w=1600'},
+  {id:56,cat:'pije',     en:'Lemon Soda',              price:'150 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff316bf070793ad1fed940?w=1600'},
+  {id:57,cat:'pije',     en:'Sprite',                  price:'150 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff317352f5fcdd085b5feb?w=1600'},
+  {id:58,cat:'pije',     en:'Bravo',                   price:'150 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff317b52f5fcdd085b5fee?w=1600'},
+  {id:59,cat:'pije',     en:'B52',                     price:'150 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff318252f5fcdd085b5ff1?w=1600'},
+  {id:60,cat:'pije',     en:'Stella',                  price:'190 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff31a652f5fcdd085b6043?w=1600'},
+  {id:61,cat:'pije',     en:'Peroni',                  price:'190 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff31ad52f5fcdd085b6046?w=1600'},
+  {id:62,cat:'pije',     en:'Borg',                    price:'190 L', badge:'',    img:'https://imageproxy.wolt.com/assets/68ff321e27718bbaa05120a5?w=1600'},
+];
+
+// ── TRANSLATIONS (SQ / IT / FR) ──
+const SQ={1:'Hamburger',2:'Hamburger Dopio',3:'Hamburger & Djathë',4:'Hamburger Shkreli',5:'Hamburger me Vezë',6:'Sandwich',7:'Sandwich Dopio Sallam',8:'Sandwich me Qofte',9:'Sandwich Dopio Qofte',10:'Sandwich Ton & Kërpudhe',11:'Sandwich Fshati',12:'Sandwich Proshutë & Kërpudhe',13:'Sandwich Vegjetarian',14:'Sandwich Club',15:'Tost',16:'Tost me Patate',17:'Piadine me Pulë',18:'Piadine me Sallam',19:'Doner',20:'Doner Dopio',21:'Sufllaqe',22:'Sufllaqe Dopio',23:'Sufllaqe me Wudy',24:'Sufllaqe Vegjetariane',25:'Sufllaqe e Hapur',26:'Racion Mish Pulë',27:'Hot Dog',28:'Hot Dog & Djathë',29:'Hot Dog Dopio',30:'Pjatë me Qofte',31:'Pjatë Chicken Nuggets',32:'Pjatë me Wudy',33:'Sallatë Mikse',34:'Sallatë Pulë',35:'Krepa Çokollatë e Zezë',36:'Krepa Çokollatë e Bardhë',37:'Krepa Çokollatë Mikse',38:'Krepa Nutella Origjinale',39:'Krepa Karamel',40:'Krepa Amareto',41:'Krepa Rihana',42:'Krepa Ledia',43:'Krepa Bad Boy',44:'Krepa Çokollatë Banane',45:'Krepa Kalifornia',46:'Krepa Chicken',47:'Krepa Meksikane',48:'Krepa Vegjetariane',49:'Ujë Natyral',50:'Ujë i Gazuar',51:'Dhallte',52:'Coca Cola',53:'Ivi',54:'Pepsi',55:'Fanta Orange',56:'Lemon Soda',57:'Sprite',58:'Bravo',59:'B52',60:'Stella',61:'Peroni',62:'Borg'};
+const IT={1:'Hamburger',2:'Hamburger Doppio',3:'Hamburger & Formaggio',4:'Hamburger Shkreli',5:'Hamburger con Uova',6:'Sandwich',7:'Sandwich Doppio Salame',8:'Sandwich Polpette',9:'Sandwich Doppio Polpette',10:'Sandwich Tonno & Funghi',11:'Sandwich Campagnolo',12:'Sandwich Prosciutto & Funghi',13:'Sandwich Vegetariano',14:'Sandwich Club',15:'Toast',16:'Toast con Patatine',17:'Piadina con Pollo',18:'Piadina con Salame',19:'Doner',20:'Doner Doppio',21:'Souvlaki',22:'Souvlaki Doppio',23:'Souvlaki con Wudy',24:'Souvlaki Vegetariano',25:'Souvlaki Aperto',26:'Porzione Pollo',27:'Hot Dog',28:'Hot Dog & Formaggio',29:'Hot Dog Doppio',30:'Piatto Polpette',31:'Piatto Chicken Nuggets',32:'Piatto Wudy',33:'Insalata Mista',34:'Insalata di Pollo',35:'Crepe Cioccolato Fondente',36:'Crepe Cioccolato Bianco',37:'Crepe Cioccolato Misto',38:'Crepe Nutella Originale',39:'Crepe Caramello',40:'Crepe Amaretto',41:'Crepe Rihana',42:'Crepe Ledia',43:'Crepe Bad Boy',44:'Crepe Cioccolato Banana',45:'Crepe California',46:'Crepe Chicken',47:'Crepe Messicana',48:'Crepe Vegetariana',49:'Acqua Naturale',50:'Acqua Frizzante',51:'Latticello',52:'Coca Cola',53:'Ivi',54:'Pepsi',55:'Fanta Orange',56:'Lemon Soda',57:'Sprite',58:'Bravo',59:'B52',60:'Stella',61:'Peroni',62:'Borg'};
+const FR={1:'Hamburger',2:'Double Hamburger',3:'Hamburger & Fromage',4:'Hamburger Shkreli',5:'Hamburger aux Oeufs',6:'Sandwich',7:'Sandwich Double Salami',8:'Sandwich Boulettes',9:'Sandwich Double Boulettes',10:'Sandwich Thon & Champignons',11:'Sandwich Campagnard',12:'Sandwich Jambon & Champignons',13:'Sandwich Vegetarien',14:'Sandwich Club',15:'Toast',16:'Toast aux Frites',17:'Piadina au Poulet',18:'Piadina au Salami',19:'Doner',20:'Double Doner',21:'Souvlaki',22:'Double Souvlaki',23:'Souvlaki au Wudy',24:'Souvlaki Vegetarien',25:'Souvlaki Ouvert',26:'Portion Poulet',27:'Hot Dog',28:'Hot Dog & Fromage',29:'Double Hot Dog',30:'Assiette Boulettes',31:'Assiette Chicken Nuggets',32:'Assiette Wudy',33:'Salade Mixte',34:'Salade Poulet',35:'Crepe Chocolat Noir',36:'Crepe Chocolat Blanc',37:'Crepe Chocolat Mixte',38:'Crepe Nutella Originale',39:'Crepe Caramel',40:'Crepe Amaretto',41:'Crepe Rihana',42:'Crepe Ledia',43:'Crepe Bad Boy',44:'Crepe Chocolat Banane',45:'Crepe Californie',46:'Crepe Poulet',47:'Crepe Mexicaine',48:'Crepe Vegetarienne',49:'Eau Naturelle',50:'Eau Gazeuse',51:'Lait Ribot',52:'Coca Cola',53:'Ivi',54:'Pepsi',55:'Fanta Orange',56:'Limonade',57:'Sprite',58:'Bravo',59:'B52',60:'Stella',61:'Peroni',62:'Borg'};
+
+const CATS={
+  sq:{all:'— Të gjitha —',burger:'Burger',sandwich:'Sandwich',doner:'Doner',pjate:'Pjata',crepe:'Krep',pije:'Pije'},
+  en:{all:'— All —',    burger:'Burger',sandwich:'Sandwich',doner:'Doner',pjate:'Plates',crepe:'Crepe',pije:'Drinks'},
+  it:{all:'— Tutti —', burger:'Burger',sandwich:'Sandwich',doner:'Doner',pjate:'Piatti',crepe:'Crepe',pije:'Bevande'},
+  fr:{all:'— Tout —',  burger:'Burger',sandwich:'Sandwich',doner:'Doner',pjate:'Plats', crepe:'Crepe',pije:'Boissons'},
+};
+const COLS={sq:['Emri','Çmimi'],en:['Name','Price'],it:['Nome','Prezzo'],fr:['Nom','Prix']};
+const SLOGANS={sq:'Çdo kafshim, kënaqësi!',en:'Every bite, a reason to smile!',it:'Ogni morso, un sorriso!',fr:'Chaque bouchee, un sourire!'};
+
+let lang='sq', activeCat='all';
+const catOrder=[{key:'burger'},{key:'sandwich'},{key:'doner'},{key:'pjate'},{key:'crepe'},{key:'pije'}];
+
+function getName(item){
+  var map={sq:SQ,en:null,it:IT,fr:FR}[lang];
+  return map?map[item.id]:item.en;
+}
+function setBg(cat){document.getElementById('bg-layer').style.backgroundImage='url('+(IMGS[cat]||IMGS.all)+')';document.getElementById('bg-label-txt').textContent=BG_LABELS[cat]||BG_LABELS.all;}
+function setLang(l){lang=l;document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('onclick').includes("'"+l+"'"));});updateCatLabels();render();}
+function setcat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('cat-'+c).classList.add('active');setBg(c);updateCatLabels();render();}
+function updateCatLabels(){
+  var cats=CATS[lang];
+  Object.keys(cats).forEach(function(k){var el=document.getElementById('cat-'+k);if(el)el.textContent=cats[k];});
+  document.getElementById('footer-slogan').textContent=SLOGANS[lang];
+}
+function imgHtml(src){
+  return '<div class="item-img-wrap"><img class="item-img" src="'+src+'" alt="" onclick="openLb(\''+src+'\')" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'" loading="lazy" style="cursor:zoom-in"><div class="item-img-placeholder" style="display:none">FOTO</div></div>';
+}
+function render(){
+  var cols=COLS[lang];
+  var cats=CATS[lang];
+  var groups=activeCat==='all'?catOrder:catOrder.filter(function(g){return g.key===activeCat;});
+  var html='';
+  groups.forEach(function(g){
+    var items=ITEMS.filter(function(i){return i.cat===g.key;});
+    if(!items.length)return;
+    html+='<div class="section-label">'+cats[g.key]+'</div>';
+    html+='<div class="menu-wrap"><table class="menu-table"><thead><tr><th class="col-name">'+cols[0]+'</th><th class="col-price th-price">'+cols[1]+'</th><th class="col-img th-img"></th></tr></thead><tbody>';
+    items.forEach(function(item){
+      var b=item.badge==='hot'?'<span class="badge badge-hot">HOT</span>':'';
+      var name=getName(item);
+      html+='<tr><td><div class="item-name"><span class="item-dot"></span><div>'+name+(b?' '+b:'')+'</div></div></td><td><div class="item-price">'+item.price+'</div></td><td>'+imgHtml(item.img)+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
+  });
+  document.getElementById('menu-root').innerHTML=html;
+}
+setBg('all');render();
+function openLb(src){var lb=document.getElementById('lightbox');document.getElementById('lb-img').src=src;lb.classList.add('open');document.body.style.overflow='hidden';}
+function closeLb(e){if(e.target===document.getElementById('lightbox')){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}}
+document.getElementById('lb-close').addEventListener('click',function(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';});
+</script>
+<div id="lightbox" onclick="closeLb(event)">
+  <button id="lb-close" onclick="document.getElementById('lightbox').classList.remove('open')">✕</button>
+  <img id="lb-img" src="" alt="">
+</div>
+</body>
+</html>
